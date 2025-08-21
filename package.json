@@ -1,5 +1,6 @@
 {
-  "name": "app",
+  "name": "note-control",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "node esbuild.config.js",
