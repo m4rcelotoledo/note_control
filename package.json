@@ -1,6 +1,7 @@
 {
   "name": "note-control",
   "version": "0.0.1",
+  "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "build": "node esbuild.config.js",
