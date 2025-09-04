@@ -3,6 +3,17 @@
   "version": "0.0.1",
   "license": "UNLICENSED",
   "private": true,
+  "author": {
+    "name": "Code Development & Consulting",
+    "email": "code@codedevelop.com.br",
+    "url": "https://www.codedevelop.com.br"
+  },
+  "contributors": [
+    {
+      "name": "Marcelo Toledo",
+      "url": "https://github.com/m4rcelotoledo"
+    }
+  ],
   "scripts": {
     "build": "node esbuild.config.js",
     "build:watch": "node esbuild.config.js --watch",
