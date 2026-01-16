@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get "registrations/new", to: "registrations#new", as: :new_registration
   post "registrations", to: "registrations#create", as: :registrations
 
+  # Resources
+  resources :companies
   # Defines the root path route ("/")
   root "dashboard#index"
 end
