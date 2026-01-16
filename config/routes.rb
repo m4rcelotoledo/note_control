@@ -23,6 +23,11 @@ Rails.application.routes.draw do
   resources :companies
   resources :invoices
 
+  # Settings (singular resource since there's only one settings object)
+  get "settings", to: "settings#index", as: :settings
+  patch "settings", to: "settings#update"
+  put "settings", to: "settings#update"
+
   # Defines the root path route ("/")
   root "dashboard#index"
 end
