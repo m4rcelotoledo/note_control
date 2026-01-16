@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   post "sessions", to: "sessions#create", as: :sessions
   delete "sessions", to: "sessions#destroy", as: :destroy_session
 
+  get "registrations/new", to: "registrations#new", as: :new_registration
+  post "registrations", to: "registrations#create", as: :registrations
+
   # Defines the root path route ("/")
   root "welcome#index"
 end
