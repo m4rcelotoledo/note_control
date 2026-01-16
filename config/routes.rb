@@ -20,5 +20,5 @@ Rails.application.routes.draw do
   post "registrations", to: "registrations#create", as: :registrations
 
   # Defines the root path route ("/")
-  root "welcome#index"
+  root "dashboard#index"
 end
