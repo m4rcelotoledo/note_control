@@ -69,17 +69,34 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Enable Corepack (for Yarn)
+        run: corepack enable
+
+      - name: Install JavaScript dependencies
+        run: yarn install --immutable
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+        run: bin/rails db:create db:migrate
+
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
           # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
+        run: bundle exec rspec
 
-      - name: Keep screenshots from failed system tests
+      - name: Upload test results
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
+          name: test-results
+          path: |
+            ${{ github.workspace }}/tmp/screenshots
+            ${{ github.workspace }}/coverage
           if-no-files-found: ignore
