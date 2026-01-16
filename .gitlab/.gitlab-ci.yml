@@ -1,0 +1,130 @@
+# GitLab CI/CD Pipeline for Note Control MEI
+# This pipeline runs security scans, linting, and tests
+
+stages:
+  - scan
+  - lint
+  - test
+  - build
+
+variables:
+  POSTGRES_DB: note_control_test
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST_AUTH_METHOD: trust
+  RAILS_ENV: test
+  BUNDLE_JOBS: 4
+  BUNDLE_RETRY: 3
+  NODE_VERSION: "24"
+
+# Cache configuration
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - vendor/bundle
+    - node_modules
+    - .yarn/cache
+
+# Default image with Ruby
+image: ruby:3.4
+
+# Services
+services:
+  - postgres:latest
+
+# Before script - runs before each job
+before_script:
+  - apt-get update -qq && apt-get install -y -qq build-essential git libpq-dev libyaml-dev nodejs npm
+  - corepack enable
+  - corepack prepare yarn@4.12.0 --activate
+  - ruby -v
+  - node -v
+  - yarn -v
+  - gem install bundler --no-document
+  - bundle config --local deployment 'true'
+  - bundle config --local without 'development production'
+  - bundle install -j $(nproc)
+  - yarn install --immutable
+
+# Security scan with Brakeman
+scan_ruby:
+  stage: scan
+  script:
+    - bin/brakeman --no-pager -f json -o brakeman-report.json || true
+    - bin/brakeman --no-pager
+  allow_failure: true
+  artifacts:
+    when: always
+    paths:
+      - brakeman-report.json
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - master
+
+# Lint with RuboCop
+lint:
+  stage: lint
+  script:
+    - bin/rubocop -f json -o rubocop-report.json || true
+    - bin/rubocop
+  allow_failure: true
+  artifacts:
+    when: always
+    paths:
+      - rubocop-report.json
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+    - master
+
+# Run tests
+test:
+  stage: test
+  variables:
+    DATABASE_URL: "postgres://postgres:postgres@postgres:5432/note_control_test"
+  script:
+    - yarn build
+    - yarn build:css
+    - bin/rails db:create db:migrate
+    - bundle exec rspec
+  artifacts:
+    when: always
+    paths:
+      - tmp/screenshots
+      - coverage
+    expire_in: 1 week
+  coverage: '/\(\d+.\d+\%\) covered/'
+  only:
+    - merge_requests
+    - main
+    - master
+
+# Optional: Build job for production
+build:
+  stage: build
+  image: ruby:3.4
+  services:
+    - postgres:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq build-essential git libpq-dev libyaml-dev nodejs npm
+    - corepack enable
+    - corepack prepare yarn@4.12.0 --activate
+    - gem install bundler --no-document
+    - bundle install -j $(nproc)
+    - yarn install --immutable
+  script:
+    - yarn build
+    - yarn build:css
+    - bin/rails assets:precompile
+  artifacts:
+    paths:
+      - public/assets
+      - app/assets/builds
+    expire_in: 1 hour
+  only:
+    - main
+    - master
+  when: manual
