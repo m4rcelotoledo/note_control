@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
   # Resources
   resources :companies
+  resources :invoices
+
   # Defines the root path route ("/")
   root "dashboard#index"
 end
