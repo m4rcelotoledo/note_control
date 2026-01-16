@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 8.0.3"
+gem "rails", "~> 8.1.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-gem "pg", "~> 1.1"
-gem "puma", ">= 5.0"
+gem "pg", "~> 1.6"
+gem "puma", ">= 7.1"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"
@@ -16,7 +16,7 @@ gem "cssbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.21"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -49,7 +49,7 @@ group :development, :test do
   gem "rubocop-rspec", require: false
 
   # Testing framework
-  gem "rspec-rails", "~> 7.0"
+  gem "rspec-rails", "~> 8.0"
   gem "factory_bot_rails"
   gem "faker"
   gem "simplecov", require: false
