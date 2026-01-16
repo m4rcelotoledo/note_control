@@ -1,0 +1,75 @@
+# Render.com Blueprint Configuration
+# This file defines the services for the Note Control MEI application
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  # Web Service - Rails Application
+  - type: web
+    name: note-control-web
+    runtime: ruby
+    plan: free # Options: starter, standard, pro
+    region: oregon # Options: oregon, frankfurt, singapore, mumbai, ohio
+    buildCommand: |
+      apt-get update && apt-get install -y build-essential libpq-dev nodejs npm
+      corepack enable
+      corepack prepare yarn@4.12.0 --activate
+      bundle install
+      yarn install --immutable
+      yarn build
+      yarn build:css
+      RAILS_ENV=production bundle exec rails assets:precompile
+      RAILS_ENV=production bundle exec rails db:migrate || true
+
+    startCommand: bundle exec puma -C config/puma.rb
+    healthCheckPath: /up
+    envVars:
+      - key: RAILS_ENV
+        value: production
+
+      - key: RAILS_MASTER_KEY
+        sync: false # Set this in Render dashboard
+
+      - key: SECRET_KEY_BASE
+        generateValue: true # Auto-generate if not set
+
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+
+      - key: RAILS_MAX_THREADS
+        value: 5
+
+      - key: WEB_CONCURRENCY
+        value: 2
+
+      # Database connection (will be set automatically by Render)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: note-control-db
+          property: connectionString
+
+      # Optional: Redis URL if using Solid Queue/Cable
+      # - key: REDIS_URL
+      #   fromService:
+      #     type: redis
+      #     name: note-control-redis
+      #     property: connectionString
+
+databases:
+  # PostgreSQL Database
+  - name: note-control-db
+    databaseName: note_control_production
+    user: note_control
+    plan: free # Options: starter, standard, pro
+    region: oregon # Should match web service region
+    postgresMajorVersion: "18"
+
+# Optional: Redis service for Solid Queue/Cable (uncomment if needed)
+# services:
+#   - type: redis
+#     name: note-control-redis
+#     plan: starter
+#     region: oregon
+#     maxmemoryPolicy: allkeys-lru
