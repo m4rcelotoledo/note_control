@@ -2,6 +2,25 @@
 
 Sistema web para controle de notas fiscais emitidas por Microempreendedores Individuais (MEI), permitindo o gerenciamento de faturas, empresas clientes e monitoramento do limite anual de faturamento.
 
+## 🌐 Aplicação em Produção
+
+A aplicação está disponível em produção no Render.com:
+
+🔗 **Acesse a aplicação**: [https://note-control-web.onrender.com/](https://note-control-web.onrender.com/)
+
+### 🔑 Credenciais de Teste
+
+Para testar a aplicação, utilize as seguintes credenciais:
+
+- **Email**: `admin@sample.com`
+- **Senha**: `password`
+
+## 📹 Apresentação
+
+Assista à apresentação da aplicação no YouTube:
+
+🎥 **Vídeo de apresentação**: [https://youtu.be/dCfjRq6KcG8](https://youtu.be/dCfjRq6KcG8)
+
 ## 📋 Sobre a Aplicação
 
 Esta aplicação foi desenvolvida para atender empreendedores MEI que precisam:
