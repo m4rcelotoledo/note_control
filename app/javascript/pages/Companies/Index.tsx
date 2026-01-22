@@ -1,6 +1,7 @@
 import React from "react";
 import { Head, Link, router } from "@inertiajs/react";
 import Layout from "../../components/Layout";
+import { formatCNPJ } from "../../utils/cnpj";
 
 interface Company {
   id: number;
@@ -61,7 +62,9 @@ const CompaniesIndex: React.FC<CompaniesIndexProps> = ({ companies }) => {
                       </div>
                       <div className="mt-2 flex items-center text-sm text-gray-500">
                         {company.cnpj && (
-                          <span className="mr-4">CNPJ: {company.cnpj}</span>
+                          <span className="mr-4">
+                            CNPJ: {formatCNPJ(company.cnpj)}
+                          </span>
                         )}
                         <span>{company.invoices_count} nota(s) fiscal(is)</span>
                       </div>
