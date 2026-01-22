@@ -106,3 +106,45 @@ jobs:
             ${{ github.workspace }}/tmp/screenshots
             ${{ github.workspace }}/coverage
           if-no-files-found: ignore
+
+  test_js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Enable Corepack (for Yarn)
+        run: corepack enable
+
+      - name: Get Yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install JavaScript dependencies
+        run: yarn install --immutable
+
+      - name: Run JavaScript tests
+        run: yarn test:run
+
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: js-coverage
+          path: |
+            ${{ github.workspace }}/coverage-js
+          if-no-files-found: ignore
