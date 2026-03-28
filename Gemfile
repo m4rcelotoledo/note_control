@@ -16,7 +16,7 @@ gem "cssbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-gem "bcrypt", "~> 3.1.21"
+gem "bcrypt", "~> 3.1.22"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
