@@ -12,7 +12,6 @@ services:
     buildCommand: |
       set -e
       corepack enable
-      gem install bundler --no-document
       bundle install
       corepack prepare yarn@4.13.0 --activate
       yarn install --immutable
