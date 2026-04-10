@@ -9,16 +9,7 @@ services:
     runtime: ruby
     plan: free # Options: starter, standard, pro
     region: oregon # Options: oregon, frankfurt, singapore, mumbai, ohio
-    buildCommand: |
-      set -e
-      corepack enable
-      bundle install
-      corepack prepare yarn@4.13.0 --activate
-      yarn install --immutable
-      yarn build
-      yarn build:css
-      RAILS_ENV=production bundle exec rails assets:precompile
-      RAILS_ENV=production bundle exec rails db:migrate || true
+    buildCommand: bash bin/render-build.sh
 
     startCommand: bundle exec puma -C config/puma.rb
     healthCheckPath: /up
