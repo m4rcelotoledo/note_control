@@ -10,7 +10,7 @@ services:
     plan: free # Options: starter, standard, pro
     region: oregon # Options: oregon, frankfurt, singapore, mumbai, ohio
     buildCommand: |
-      apt-get update && apt-get install -y build-essential libpq-dev nodejs npm
+      set -e
       corepack enable
       bundle install
       corepack prepare yarn@4.13.0 --activate
