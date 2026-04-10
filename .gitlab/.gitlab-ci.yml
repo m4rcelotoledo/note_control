@@ -111,7 +111,7 @@ build:
   before_script:
     - apt-get update -qq && apt-get install -y -qq build-essential git libpq-dev libyaml-dev nodejs npm
     - corepack enable
-    - corepack prepare yarn@4.12.0 --activate
+    - corepack prepare yarn@4.13.0 --activate
     - gem install bundler --no-document
     - bundle install -j $(nproc)
     - yarn install --immutable
