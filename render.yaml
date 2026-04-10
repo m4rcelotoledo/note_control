@@ -12,8 +12,8 @@ services:
     buildCommand: |
       apt-get update && apt-get install -y build-essential libpq-dev nodejs npm
       corepack enable
-      corepack prepare yarn@4.12.0 --activate
       bundle install
+      corepack prepare yarn@4.13.0 --activate
       yarn install --immutable
       yarn build
       yarn build:css
