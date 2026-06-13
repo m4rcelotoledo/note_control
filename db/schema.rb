@@ -10,30 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_10_030202) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_10_030202) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "companies", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "name"
     t.string "cnpj"
     t.datetime "created_at", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["user_id", "name"], name: "index_companies_on_user_id_and_name"
     t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "company_id", null: false
-    t.string "number"
-    t.decimal "value", precision: 10, scale: 2
-    t.date "competence_month"
     t.date "cash_month"
-    t.text "service_description"
+    t.bigint "company_id", null: false
+    t.date "competence_month"
     t.datetime "created_at", null: false
+    t.string "number"
+    t.text "service_description"
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.decimal "value", precision: 10, scale: 2
     t.index ["cash_month"], name: "index_invoices_on_cash_month"
     t.index ["company_id"], name: "index_invoices_on_company_id"
     t.index ["competence_month"], name: "index_invoices_on_competence_month"
@@ -42,17 +42,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_10_030202) do
   end
 
   create_table "settings", force: :cascade do |t|
-    t.string "key"
-    t.text "value"
     t.datetime "created_at", null: false
+    t.string "key"
     t.datetime "updated_at", null: false
+    t.text "value"
     t.index ["key"], name: "index_settings_on_key", unique: true
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "email"
     t.string "password_digest"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
