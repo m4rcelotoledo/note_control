@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "~> 8.1.4"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
-gem "pg", "~> 1.6"
+gem "pg", "~> 1.7"
 gem "puma", ">= 7.1"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
